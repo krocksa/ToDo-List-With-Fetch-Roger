@@ -4,3 +4,33 @@
 .list:hover > .button {
     display: inline;
 }
+
+body{
+    background: black;
+}
+.todolist{
+    height: 657px;
+    width: 800px;
+    background: #96c9fa;
+    margin: auto;
+}
+.dentroDe{
+    height: 500px;
+    width: 500px;
+    background: #ffc685;
+    margin: auto;
+    text-align: center;
+}
+.newOne{
+    margin: 20px;
+    border: 1px solid #08f190;
+    background: #b6bbff;
+    color: #7a3838;
+    height: 39px;
+    font-size: 130%;
+}
+.button{
+    float: right;
+    background: red;
+    text-align: right;
+}
