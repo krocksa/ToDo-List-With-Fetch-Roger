@@ -1,22 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ListGroup from 'react-bootstrap/ListGroup';
 
 const Home = () => {
 
 	const [ input, setInput ] = useState('');
 	const [ all, setAll ] = useState([]);
-	const [status, setStatus] = useState("to-do");
 
+	const putTodo = async (newTasks) => {
+
+		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/krocksa",{
+			headers: {
+				"Content-Type": "application/json"
+			},
+			method: "PUT",
+			body: JSON.stringify(newTasks)
+		})
+		let data = await response.json();
+		if (response.ok) {
+			getTodo();
+		}
+	}
+
+	const getTodo = async (newTasks) => {
+		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/krocksa",{
+			headers: {
+				"Content-Type": "application/json"
+			},
+			method: "GET",
+			body: JSON.stringify(newTasks)
+		})
+		let data = await response.json()
+		setAll(data)
+	}
+	useEffect(()=>{
+		getTodo();
+	})
 	function handleAdd(e) {
 		if (e.key == "Enter"){
-			setAll([...all,{label:input,status:status}])
-			setInput("")
+			setAll([...all,{label:input,done:false}]);
+			putTodo([...all,{label:input,done:false}]);
+			setInput("");
 		}
 	}
 
 	const handleDelete = (currentIndex)=>{
 		let newTasks = all.filter((task, index)=> index != currentIndex)
-		setAll(newTasks)
+		// setAll(newTasks)
+		putTodo(newTasks);
 	}
 
 	return (
