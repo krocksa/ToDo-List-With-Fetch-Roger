@@ -1,36 +1,40 @@
-.button{
-    display: none;
-}
-.list:hover > .button {
-    display: inline;
-}
-
 body{
-    background: black;
+    background: #742b2b;
 }
-.todolist{
-    height: 657px;
-    width: 800px;
-    background: #96c9fa;
-    margin: auto;
-}
-.dentroDe{
-    height: 500px;
-    width: 500px;
-    background: #ffc685;
-    margin: auto;
+.title{
+    color: #f3f1f1;
     text-align: center;
 }
+.todolist{
+    height: 611px;
+    width: 800px;
+    background: #fdff70;
+    margin: auto;
+    padding-top: 3%;
+}
+.dentroDe{
+    height: 520px;
+    width: 500px;
+    background: #526cfd;
+    margin: auto;
+    text-align: center;
+    color: #fff3dc;
+}
 .newOne{
-    margin: 20px;
+    margin: 2px;
     border: 1px solid #08f190;
-    background: #b6bbff;
-    color: #7a3838;
-    height: 39px;
+    background: #fa3333;
+    color: #ffffff;
+    height: 50px;
     font-size: 130%;
+    display: flex;
 }
 .button{
     float: right;
-    background: red;
+    background: #ffdc9b;
     text-align: right;
+    display: none;
+}
+.newOne:hover>.button {
+    display: inline;
 }
