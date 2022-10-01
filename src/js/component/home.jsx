@@ -3,13 +3,30 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 const Home = () => {
 
+	const urlApi = "https://assets.breatheco.de/apis/fake/todos/user"
+
 	const [ input, setInput ] = useState('');
 	const [ all, setAll ] = useState([]);
-	const [ trigger, setTrigger ] = useState(false);
+	const [inputUser, setInputUser] = useState("")
+	const [user, setUser] = useState("")
+
+	const postToDo = async (newUser) =>{
+		let response = await fetch(`${urlApi}/${newUser}`,{
+			headers:{
+				"Content-Type":"application/json"
+			},
+			method:"POST",
+			body: JSON.stringify([]) 
+		})
+		let data = await response.json()
+		if (response.ok){
+			getTodo(newUser)
+		}
+	}
 
 	const putTodo = async (newTasks) => {
 
-		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/krocksa",{
+		let response = await fetch(`${urlApi}/${user}`,{
 			headers: {
 				"Content-Type": "application/json"
 			},
@@ -18,20 +35,25 @@ const Home = () => {
 		})
 		let data = await response.json();
 		if (response.ok) {
-			getTodo();
+			console.log(data)
+			getTodo(user);
 		}
 	}
 
-	const getTodo = async (newTasks) => {
-		let response = await fetch("https://assets.breatheco.de/apis/fake/todos/user/krocksa",{
+	const getTodo = async (newUser) => {
+		let response = await fetch(`${urlApi}/${newUser}`,{
 			headers: {
 				"Content-Type": "application/json"
 			},
 			method: "GET",
-			body: JSON.stringify(newTasks)
 		})
 		let data = await response.json()
-		setAll(data)
+		if (response.ok) {
+			setAll(data)
+		} 
+		else {
+			postToDo(newUser)
+		}
 	}
 	useEffect(()=>{
 		getTodo();
@@ -43,6 +65,16 @@ const Home = () => {
 			setInput("");
 		}
 	}
+	
+	const handleAddUser = (e)=>{
+		if (e.key == "Enter"){
+			setInputUser(e.target.value)
+			setUser(e.target.value)
+			getTodo(e.target.value)
+			postToDo(e.target.value)
+			setInputUser("");
+		}
+	}
 
 	const handleDelete = (currentIndex)=>{
 		let newTasks = all.filter((task, index)=> index != currentIndex)
@@ -50,12 +82,25 @@ const Home = () => {
 		putTodo(newTasks);
 	}
 
+	const handleDeleteUser = async () => {
+		let response = await fetch(`${urlApi}/${user}`,{
+			headers: {
+				"Content-Type": "application/json"
+			},
+			method: "DELETE"
+		})
+		let data = await response.json();
+		if (response.status == 200) {
+			console.log("Chao");
+		}
+	}
+
 	return (
 		<div className="title">
-			<h2>ToDo List Roger.js</h2>
+			<h2>ToDo Fetch Roger.js</h2>
 				<div className="todolist">
 					<div className="dentroDe">
-						<h3>ALL TASKS</h3>
+						<h3>ALL TASKS & USERS</h3>
 					<div className="input">
 					<input 
 						type="text" placeholder="Input Task"
@@ -64,6 +109,19 @@ const Home = () => {
 						onKeyDown={handleAdd}
 					/>
 					</div>
+
+					<button  onClick={() => handleDeleteUser()}>
+					Delete User
+					</button>
+
+					<input 
+			 	type="text" 
+				onChange={(e)=>{setInputUser(e.target.value)}} 
+				value={inputUser} 
+				placeholder="Input User"
+				onKeyDown={handleAddUser}
+			/>
+
 					<ListGroup>
 						{
 							all.map((task,index)=>{
