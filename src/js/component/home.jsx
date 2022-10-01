@@ -5,6 +5,7 @@ const Home = () => {
 
 	const [ input, setInput ] = useState('');
 	const [ all, setAll ] = useState([]);
+	const [ trigger, setTrigger ] = useState(false);
 
 	const putTodo = async (newTasks) => {
 
@@ -34,7 +35,7 @@ const Home = () => {
 	}
 	useEffect(()=>{
 		getTodo();
-	})
+	},[])
 	function handleAdd(e) {
 		if (e.key == "Enter"){
 			setAll([...all,{label:input,done:false}]);
@@ -45,7 +46,7 @@ const Home = () => {
 
 	const handleDelete = (currentIndex)=>{
 		let newTasks = all.filter((task, index)=> index != currentIndex)
-		// setAll(newTasks)
+		setAll(newTasks)
 		putTodo(newTasks);
 	}
 
